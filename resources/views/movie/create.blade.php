@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
+
+
     <div class="container mt-5">
         <div class="card">
             <div class="card-header">
@@ -8,124 +10,149 @@
             </div>
             <div class="card-body">
                 @if(session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
+                    <div class="alert alert-success">{{ session('success') }}</div>
+                @endif
+
+                @if(session('error'))
+                    <div class="alert alert-danger">{{ session('error') }}</div>
                 @endif
 
                 <form action="{{ route('movies.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
-                    <!-- Movie Title -->
                     <div class="mb-4">
-                        <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
-                        <input type="text" name="title" class="form-control" required placeholder="Enter movie title">
-                        @error('title') <small class="text-red-500">{{ $message }}</small> @enderror
+                        <label for="title">Title</label>
+                        <input type="text" name="title" class="form-control" required placeholder="Enter movie title" value="{{ old('title') }}">
                     </div>
 
-                    <!-- Description -->
                     <div class="mb-4">
-                        <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
-                        <textarea name="description" class="form-control" required placeholder="Enter movie description"></textarea>
-                        @error('description') <small class="text-red-500">{{ $message }}</small> @enderror
-                    </div>
-
-                    <!-- Release Date -->
-                    <div class="mb-4">
-                        <label for="release_date" class="block text-sm font-medium text-gray-700">Release Date</label>
-                        <input type="date" name="release_date" class="form-control" required>
-                        @error('release_date') <small class="text-red-500">{{ $message }}</small> @enderror
-                    </div>
-
-                    @php
-                        $selectedGenres = old('genres', $selectedGenres ?? []);
-                    @endphp
-
-
-                    <div class="mb-4">
-                        <label for="genres" class="block text-sm font-medium text-gray-700">Genres</label>
-
-                        <!-- Genres (multiple selection) -->
-                    <select name="genres[]" id="genres" class="form-control" multiple>
-                        @foreach ([
-                            'Action', 'Comedy', 'Crime', 'Family', 'Fantasy', 'History',
-                            'Horror', 'Musical', 'Mystery', 'Thriller', 'War', 'Western',
-                            'Romance', 'Adventure', 'Drama', 'Sci-Fi', 'Superhero', 'Spy'
-                        ] as $genre)
-                            <option value="{{ $genre }}" {{ in_array($genre, $selectedGenres) ? 'selected' : '' }}>
-                                {{ $genre }}
-                            </option>
-                        @endforeach
-                    </select>
-                    </div>
-
-
-                    <!-- Language -->
-                    <div class="mb-4">
-                        <label for="language" class="block text-sm font-medium text-gray-700">Language</label>
-                        <input type="text" name="language" class="form-control" required placeholder="Enter movie language">
-                        @error('language') <small class="text-red-500">{{ $message }}</small> @enderror
-                    </div>
-
-{{--                    <!-- Free/Paid -->--}}
-                    <!-- Type Selection -->
-                    <div class="mb-4">
-                        <label for="type" class="block text-sm font-medium text-gray-700">Free/Paid</label>
-                        <select id="typeSelector" name="type" class="form-control" required>
-                            <option value="Free">Free</option>
-                            <option value="Paid">Paid</option>
+                        <label for="genre">Genre</label>
+                        <select name="genre" class="form-control" required>
+                            <option value="" disabled selected>Select Genre</option>
+                            @foreach($genres as $genre)
+                                <option value="{{ $genre->id }}" {{ old('genre') == $genre->id ? 'selected' : '' }}>
+                                    {{ $genre->name }}
+                                </option>
+                            @endforeach
                         </select>
-                        @error('type') <small class="text-red-500">{{ $message }}</small> @enderror
                     </div>
 
-                    <!-- Price (Hidden by default for 'Free') -->
-                    <div class="mb-4" id="priceField" style="display: none;">
-                        <label for="price" class="block text-sm font-medium text-gray-700">Price</label>
-                        <input type="number" name="price" class="form-control" placeholder="Enter price">
-                        @error('price') <small class="text-red-500">{{ $message }}</small> @enderror
-                    </div>
-
-
-
-                    <!-- YouTube Trailer URL -->
+{{--                    <div class="mb-4">--}}
+{{--                        <label for="language">Languages</label>--}}
+{{--                        <select name="language[]" class="form-control select2" multiple="multiple" required>--}}
+{{--                            @foreach($languages as $language)--}}
+{{--                                <option value="{{ $language['_id'] }}"--}}
+{{--                                    {{ collect(old('language'))->contains($language['_id']) ? 'selected' : '' }}>--}}
+{{--                                    {{ $language['name'] }}--}}
+{{--                                </option>--}}
+{{--                            @endforeach--}}
+{{--                        </select>--}}
+{{--                    </div>--}}
                     <div class="mb-4">
-                        <label for="youtube_trailer" class="block text-sm font-medium text-gray-700">YouTube Trailer URL</label>
-                        <input type="url" name="youtube_trailer" class="form-control" required placeholder="Enter YouTube trailer URL">
-                        @error('youtube_trailer') <small class="text-red-500">{{ $message }}</small> @enderror
-                    </div>
-
-                    <!-- Thumbnail Upload -->
-                    <div class="mb-4">
-                        <label for="thumbnail" class="block text-sm font-medium text-gray-700">Thumbnail</label>
-                        <input type="file" name="thumbnail" class="form-control" required>
-                        @error('thumbnail') <small class="text-red-500">{{ $message }}</small> @enderror
-                    </div>
-
-                    <!-- Poster Upload -->
-                    <div class="mb-4">
-                        <label for="poster" class="block text-sm font-medium text-gray-700">Poster</label>
-                        <input type="file" name="poster" class="form-control" required>
-                        @error('poster') <small class="text-red-500">{{ $message }}</small> @enderror
-                    </div>
-
-                    <!-- Publish/Unpublish -->
-                    <div class="mb-4">
-                        <label for="publish" class="block text-sm font-medium text-gray-700">Publish/Unpublish</label>
-                        <select name="publish" class="form-control" required>
-                            <option value="1">Publish</option>
-                            <option value="0">Unpublish</option>
+                        <label for="language">Languages</label>
+                        <select id="language-select" name="language[]" class="form-control select2" multiple="multiple" required>
+                            <option value="all">All</option>
+                            @foreach($languages as $language)
+                                <option value="{{ $language['_id'] }}"
+                                    {{ collect(old('language'))->contains($language['_id']) ? 'selected' : '' }}>
+                                    {{ $language['name'] }}
+                                </option>
+                            @endforeach
                         </select>
-                        @error('publish') <small class="text-red-500">{{ $message }}</small> @enderror
                     </div>
 
-                    <!-- Download Yes/No -->
+
+
                     <div class="mb-4">
-                        <label for="download" class="block text-sm font-medium text-gray-700">Download</label>
-                        <select name="download" class="form-control" required>
-                            <option value="1">Yes</option>
-                            <option value="0">No</option>
+                        <label for="country">Countries</label>
+                        <select id="country-select" name="country[]" class="form-control select2" multiple="multiple" required>
+                            <option value="all">All</option>
+                            @foreach($countries as $country)
+                                <option value="{{ $country['id'] }}"
+                                    {{ collect(old('country'))->contains($country['id']) ? 'selected' : '' }}>
+                                    {{ $country['country'] }}
+                                </option>
+                            @endforeach
                         </select>
-                        @error('download') <small class="text-red-500">{{ $message }}</small> @enderror
+                    </div>
+
+
+
+
+
+                    <div class="mb-4">
+                        <label for="channel_id">Channel</label>
+                        <select name="channel_id" class="form-control" required>
+                            <option value="" disabled selected>Select Channel</option>
+                            @foreach($channels as $channel)
+                                <option value="{{ $channel['id'] }}" {{ old('channel_id') == $channel['id'] ? 'selected' : '' }}>
+                                    {{ $channel['channel_name'] }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="release">Release Date</label>
+                        <input type="date" name="release" class="form-control" value="{{ old('release') }}">
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="price">Price</label>
+                        <input type="number" name="price" class="form-control" placeholder="Enter price" value="{{ old('price') }}">
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="is_paid">Is Paid</label>
+                        <select name="is_paid" class="form-control">
+                            <option value="1" {{ old('is_paid') == '1' ? 'selected' : '' }}>Paid</option>
+                            <option value="0" {{ old('is_paid') == '0' ? 'selected' : '' }}>Free</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="publication">Publication</label>
+                        <select name="publication" class="form-control">
+                            <option value="1" {{ old('publication') == '1' ? 'selected' : '' }}>Publish</option>
+                            <option value="0" {{ old('publication') == '0' ? 'selected' : '' }}>Unpublish</option>
+                        </select>
+                    </div>
+
+{{--                    <div class="mb-4">--}}
+{{--                        <label for="trailer">Trailer File (Optional)</label>--}}
+{{--                        <input type="file" name="trailer" class="form-control" accept="video/*">--}}
+{{--                    </div>--}}
+
+                    <div class="mb-4">
+                        <label for="trailer_link">Trailer Link (YouTube) <span class="text-muted">(Optional)</span></label>
+                        <input type="url" name="trailer_link" class="form-control" placeholder="Enter trailer video link" value="{{ old('trailer_link') }}">
+                    </div>
+
+
+                    <div class="mb-4">
+                        <label for="thumbnail_image" class="fw-bold">🖼️ Thumbnail Image (Horizontal)</label>
+                        <input type="file" name="thumbnail" id="thumbnail_image" class="form-control" accept="image/*">
+                        <small class="form-text text-muted">Recommended: 16:9 (e.g., 1280x720) — Used in previews & cards.</small>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="poster_image" class="fw-bold">🎞️ Poster Image (Vertical)</label>
+                        <input type="file" name="poster" id="poster_image" class="form-control" accept="image/*">
+                        <small class="form-text text-muted">Recommended: 2:3 (e.g., 1080x1620) — Used in movie details page.</small>
+                    </div>
+
+
+                    <div class="mb-4">
+                        <label for="file">Video File <span class="text-danger">*</span></label>
+                        <input type="file" name="file" class="form-control" required accept="video/*">
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="enable_download">Enable Download</label>
+                        <select name="enable_download" class="form-control">
+                            <option value="1" {{ old('enable_download') == '1' ? 'selected' : '' }}>Yes</option>
+                            <option value="0" {{ old('enable_download') == '0' ? 'selected' : '' }}>No</option>
+                        </select>
                     </div>
 
                     <button type="submit" class="btn btn-primary">Add Movie</button>
@@ -134,47 +161,47 @@
         </div>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            new Choices('#genres', {
-                removeItemButton: true,  // for tag-style removal
+        $(document).ready(function () {
+            $('.select2').select2({
+                placeholder: "Select an option",
+                allowClear: true,
+                tags: false, // If you want to allow only pre-defined options
+                closeOnSelect: false  // This keeps dropdown open after selecting an item
             });
         });
-        document.addEventListener('DOMContentLoaded', function () {
-            const typeSelector = document.getElementById('typeSelector');
-            const priceField = document.getElementById('priceField');
-
-            function togglePriceField() {
-                if (typeSelector.value === 'paid') {
-                    priceField.style.display = 'block';
-                } else {
-                    priceField.style.display = 'none';
-                }
-            }
-
-            // Initial state check
-            togglePriceField();
-
-            // Event listener
-            typeSelector.addEventListener('change', togglePriceField);
-        });
     </script>
-
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const typeSelector = document.getElementById('typeSelector');
-            const priceField = document.getElementById('priceField');
+        $(document).ready(function () {
+            $('#country-select').on('change', function () {
+                const allValue = 'all';
+                const selected = $(this).val();
 
-            function togglePriceField() {
-                if (typeSelector.value === 'Paid') {
-                    priceField.style.display = 'block';
-                } else {
-                    priceField.style.display = 'none';
+                if (selected.includes(allValue)) {
+                    // Select all options except "All"
+                    $(this).find('option').prop('selected', true);
+                    $(this).find('option[value="all"]').prop('selected', false); // optionally keep All unselected
+                    $(this).trigger('change');
                 }
-            }
+            });
 
-            typeSelector.addEventListener('change', togglePriceField);
-            togglePriceField(); // Initialize on page load
+            $('#language-select').on('change', function () {
+                const allValue = 'all';
+                const selected = $(this).val();
+
+                if (selected.includes(allValue)) {
+                    // Select all options except "All"
+                    $(this).find('option').prop('selected', true);
+                    $(this).find('option[value="all"]').prop('selected', false); // optionally keep All unselected
+                    $(this).trigger('change');
+                }
+            });
         });
     </script>
 @endsection
+

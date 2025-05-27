@@ -16,13 +16,15 @@
                             <tr>
                                 <th>#</th>
 {{--                                <th>Thumbnail</th>--}}
-                                <th>Title</th>
-                                <th>Genres</th>
-                                <th>Language</th>
+                                <th>Episodes</th>
+                                <th>Season</th>
+                                <th>Movies</th>
 {{--                                <th>Release Date</th>--}}
 {{--                                <th>Status</th>--}}
                                 <th>Download</th>
-{{--                                <th>Type</th>--}}
+                                <th>Countries</th>
+
+                                {{--                                <th>Type</th>--}}
                                 <th>Actions</th>
                             </tr>
                             </thead>
@@ -57,6 +59,12 @@
 {{--                                        @endif--}}
 {{--                                    </td>--}}
                                     <td>{{ $movie['enable_download'] ? 'Yes' : 'No' }}</td>
+                                    <td>
+                                        @foreach ($movie['country'] as $country)
+                                            <span class="badge bg-primary">{{ $country }}</span>
+                                        @endforeach
+                                    </td>
+
 
                                     <td>
                                         <a href="{{ route('movies.show', $movie['id']) }}" class="btn btn-info btn-sm" title="View"><i class="fas fa-eye"></i></a>

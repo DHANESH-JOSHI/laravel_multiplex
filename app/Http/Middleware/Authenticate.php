@@ -14,15 +14,15 @@ class Authenticate
             return redirect()->route('login');
         }
 
-        $path = $request->path();
-
-        if (str_contains($path, 'user-login')) {
-            return redirect()->route('user-login');
-        }
-
-        if (str_contains($path, 'login')) {
-            return redirect()->route('login'); // assuming 'login' is for admin
-        }
+//        $path = $request->path();
+//
+//        if (str_contains($path, 'user-login')) {
+//            return redirect()->route('user-login');
+//        }
+//
+//        if (str_contains($path, 'login')) {
+//            return redirect()->route('login'); // assuming 'login' is for admin
+//        }
 
 //        return $next($request);
 

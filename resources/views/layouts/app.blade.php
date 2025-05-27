@@ -3,7 +3,6 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Laravel') }}</title>
 
@@ -106,10 +105,24 @@
             }
         }
 
+        .select2-selection__choice {
+            background-color: #007bff;
+            color: black;
+            border: none;
+            border-radius: 20px;
+            padding: 4px 10px;
+            margin-top: 5px;
+        }
+
+        .select2-selection__choice__remove {
+            color: black;
+            margin-right: 5px;
+        }
+
     </style>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
-
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 </head>
 <body>
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
@@ -170,10 +183,24 @@
         </main>
     @endif
 </div>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
+<script>
+    $(document).ready(function () {
+        $('.select2').select2({
+            tags: true, // Enables tag-like behavior
+            tokenSeparators: [','],
+            placeholder: "Select options",
+            allowClear: true,
+            width: '100%',
+            closeOnSelect: false
+        });
+    });
+</script>
 {{-- Sidebar Toggle Script --}}
 <script>
     document.addEventListener('DOMContentLoaded', function () {

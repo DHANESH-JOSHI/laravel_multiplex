@@ -110,7 +110,7 @@ class AuthController extends Controller
         if (!$user || !md5($request->password, $user->password)) {
             return redirect()->back()->withErrors(['email' => 'Invalid email or password.']);
         }
-
+//        dd($user->role);
         if ($user->role === 'admin') {
             Auth::login($user);
             return redirect()->intended('/dashboard');

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CountryController;
 use App\Http\Controllers\FrontendPageController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
@@ -14,8 +15,10 @@ use \App\Http\Controllers\TransactionLogController;
 use \App\Http\Controllers\NotificationController;
 use \App\Http\Controllers\HomeController;
 use \App\Http\Controllers\FrontMovieController;
+use \App\Http\Controllers\HomeBannerController;
+use \App\Http\Controllers\SeasonsController;
 
-
+//Route::get('/', [HomeController::class, 'HomeBanner'])->name('home');
 
 
 //LoginAuth
@@ -43,10 +46,14 @@ Route::get('user-data', [FrontendPageController::class, 'delUserData'])->name('u
 //Route::get('register', [FrontendPageController::class, 'RegisterUser'])->name('register');
 //Route::get('userLogin', [FrontendPageController::class, 'about'])->name('about');
 
+Route::get('/api/fetch-home-data', [FrontendPageController::class, 'getBanners']);
 Route::get('/', function () {
-    return view('welcome');
+        return view('welcome');
 })->name('home');
 
+
+//Route::get('/', function () {
+//})->name('home');
 
 
 Route::get('/front-movies', [FrontMovieController::class, 'index'])->name('frontmovies.index');
@@ -62,6 +69,10 @@ Route::middleware(['auth'])->group(function () {
 
     //webSeries
     Route::resource('webseries', WebseriesController::class);
+    Route::resource('seasons', SeasonsController::class);
+    Route::resource('episodes', WebseriesController::class);
+
+    Route::resource('countries', CountryController::class);
 
     //package Plan
     Route::resource('plan', PlanController::class);
@@ -74,6 +85,9 @@ Route::middleware(['auth'])->group(function () {
 
     //Banner
     Route::resource('banner', BannerController::class);
+
+    //HomeScreenBanner
+    Route::resource('home-banner', HomeBannerController::class);
 
     //users
     Route::resource('users', UserController::class);

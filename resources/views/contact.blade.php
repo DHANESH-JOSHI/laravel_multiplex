@@ -12,10 +12,7 @@
                 <div class="w-full md:w-1/2">
                     <h3 class="text-xl font-semibold text-gray-800 mb-4">NKFC PVT LTD</h3>
                     <p class="text-gray-700 leading-relaxed mb-6">
-                        Unit No. A-201, 2nd Floor, in Morya House Premises Co-Operative Society Ltd.,<br />
-                        Plot No. B-66 & B-67, Veera Industrial Estate,<br />
-                        Oshiwara Link Road, Andheri (W),<br />
-                        Mumbai – 400 053.
+                        203 Reliable Business Centre<br /> Oshiwara opposite Heera Panna Mall<br /> Andheri West<br /> Mumbai Maharashtra 400053
                     </p>
 
                     <div class="mb-6">

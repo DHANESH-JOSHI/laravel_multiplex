@@ -32,7 +32,7 @@ return [
     'connections' => [
         'mongodb' => [
           'driver' => 'mongodb',
-          'dsn' => env('DB_URI', ''),
+          'dsn' => env('DB_URI', 'http://localhost:27017'),
           'database' => env('DB_DATABASE', 'multiplex'),
         ],
 

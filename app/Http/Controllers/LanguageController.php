@@ -2,67 +2,64 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\HomeBanner;
+use App\Models\r;
 use Illuminate\Http\Request;
 
-class FrontendPageController extends Controller
+class LanguageController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function about()
+    public function index()
     {
-        return view('about');
+        //
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function tc()
+    public function create()
     {
-        return view('terms');
+        //
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function policy()
+    public function store(Request $request)
     {
-        return view('privacy');
+        //
     }
 
     /**
      * Display the specified resource.
      */
-    public function help()
+    public function show(r $r)
     {
-        return view('help');
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function contact()
+    public function edit(r $r)
     {
-        return view('contact');
+        //
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function delUserData()
+    public function update(Request $request, r $r)
     {
-        return view('remove_data');
+        //
     }
 
     /**
      * Remove the specified resource from storage.
-    */
-
-    public function getBanners()
+     */
+    public function destroy(r $r)
     {
-        $banners = HomeBanner::all();
-        dd($banners);
-        return response()->json($banners);
+        //
     }
 }

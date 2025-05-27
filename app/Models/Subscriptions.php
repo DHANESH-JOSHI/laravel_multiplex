@@ -13,6 +13,7 @@ class Subscriptions extends Model
         'user_id',
         'plan_id',
         'channel_id',
+        'admin_channel_id',
         'price_amount',
         'timestamp_from',
         'timestamp_to',

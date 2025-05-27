@@ -20,6 +20,8 @@
     </script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
+
 </head>
 
 <body class="bg-[#F7F7F7] text-black font-sans">
@@ -74,12 +76,12 @@
 
 
 <footer class="fixed bottom-0 left-0 w-full bg-black text-white py-6 text-center text-xs md:text-sm z-50">
-    &copy; 2025 MultiplexPlay. All Rights Reserved.
+    All rights reserved and copyright ©NKFC PVT LTD
 </footer>
-
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
 <script>
     AOS.init({ duration: 1000, once: true });
 

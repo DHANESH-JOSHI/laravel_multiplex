@@ -22,16 +22,39 @@ class BannerController extends Controller
      */
     public function create()
     {
-        //
+        return view('slider.create');
     }
+
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'slider_id' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
+            'image_link' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'action_type' => 'nullable|string',
+            'action_btn_text' => 'nullable|string|max:255',
+            'video_link' => 'nullable|url',
+            'order' => 'required|integer',
+            'publication' => 'required|boolean',
+        ]);
+
+        // Handle file upload
+        if ($request->hasFile('image_link')) {
+            $file = $request->file('image_link');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $path = $file->storeAs('banners', $filename, 'public');
+            $validated['image_link'] = '/storage/' . $path;
+        }
+
+        Slider::create($validated);
+
+        return redirect()->route('banner.index')->with('success', 'Banner created successfully!');
     }
+
 
     /**
      * Display the specified resource.

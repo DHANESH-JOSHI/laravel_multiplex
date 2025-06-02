@@ -7,7 +7,7 @@
             {{-- Payments --}}
             <x-dashboard-card title="TOTAL COLLECTED PAYMENT" icon="fa-indian-rupee-sign" value="{{ $TotalCollectedPayments }}" color="danger" />
             <x-dashboard-card title="MONTHLY COLLECTED PAYMENT" icon="fa-indian-rupee-sign" value="{{ $TotalMonthlyPayments }}" color="warning" />
-            <x-dashboard-card title="CHANNEL COLLECTED PAYMENT" icon="fa-indian-rupee-sign" value="5000" color="warning" />
+            <x-dashboard-card title="MONTHLY CHANNEL COLLECTED PAYMENT" icon="fa-indian-rupee-sign" value="5000" color="warning" />
             <x-dashboard-card title="TOTAL CHANNEL COLLECTED PAYMENT" icon="fa-indian-rupee-sign" value="5000" color="warning" />
 
             {{--            <x-dashboard-card title="DAILY COLLECTED PAYMENT" icon="fa-indian-rupee-sign" value="0" color="info" />--}}

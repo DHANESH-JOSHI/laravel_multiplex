@@ -26,6 +26,15 @@
                 <input type="text" class="form-control w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" id="slug" name="slug" value="{{ old('slug', $genre->slug) }}" required>
             </div>
 
+            <div class="form-group mb-3">
+                <label for="featured">Featured</label>
+                <select name="featured" class="form-control" required>
+                    <option value="1" {{ old('featured', $genre->featured) == 1 ? 'selected' : '' }}>Yes</option>
+                    <option value="0" {{ old('featured', $genre->featured) == 0 ? 'selected' : '' }}>No</option>
+                </select>
+                @error('featured') <small class="text-danger">{{ $message }}</small> @enderror
+            </div>
+
             <!-- URL -->
             <div class="form-group">
                 <label for="url" class="block text-sm font-medium text-gray-700">URL</label>

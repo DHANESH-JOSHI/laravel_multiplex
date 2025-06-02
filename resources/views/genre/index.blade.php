@@ -1,8 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
+
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-semibold text-gray-800">Banner List</h2>
+        <a href="{{ route('genre.create') }}"
+           class="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition">
+            ➕ Add Genre
+        </a>
+    </div>
     <div class="container mt-5 mx-auto px-4">
-        <h1 class="text-center text-3xl font-semibold mb-6">Genres List</h1>
+
 
         <table class="min-w-full table-auto border-collapse shadow-lg bg-white rounded-lg" id="genreTable">
             <thead class="bg-indigo-600 text-white">
@@ -15,7 +23,6 @@
             </tr>
             </thead>
             <tbody class="text-gray-700">
-            <!-- Data will be filled dynamically via DataTables -->
             </tbody>
         </table>
     </div>

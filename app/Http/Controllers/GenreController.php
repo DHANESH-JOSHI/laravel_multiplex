@@ -159,7 +159,9 @@ class GenreController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'slug' => 'required|string|max:255',
-            'image_url' => 'nullable|image|mimes:jpg,jpeg,png,gif,svg', // File validation
+            'url' => 'nullable|string|max:255',
+            'image_url' => 'nullable|image|mimes:jpg,jpeg,png,gif,svg|max:2048', // File validation
+            'featured' => 'required|in:0,1'
         ]);
 
         // Find the genre to update
@@ -167,7 +169,7 @@ class GenreController extends Controller
 
         // Check if an image was uploaded
         if ($request->hasFile('image_url')) {
-            // Store the image in the 'public' folder and get its path
+            // Store the image in the 'public/genres' directory
             $imagePath = $request->file('image_url')->store('genres', 'public');
 
             // Delete the old image if it exists
@@ -175,7 +177,7 @@ class GenreController extends Controller
                 Storage::disk('public')->delete($genre->image_url);
             }
 
-            // Update the genre with the new image URL
+            // Update image path
             $genre->image_url = $imagePath;
         }
 
@@ -183,13 +185,16 @@ class GenreController extends Controller
         $genre->name = $request->input('name');
         $genre->description = $request->input('description');
         $genre->slug = $request->input('slug');
+        $genre->featured = $request->input('featured');
+        $genre->url = $request->input('url');
 
         // Save the genre
         $genre->save();
 
-        // Redirect back to the genres list with a success message
+        // Redirect back with success message
         return redirect()->route('genre.index')->with('success', 'Genre updated successfully!');
     }
+
 
     /**
      * Remove the specified resource from storage.

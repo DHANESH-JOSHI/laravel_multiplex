@@ -97,18 +97,21 @@ class MovieController extends Controller
             'enable_download' => 'nullable|boolean',
         ]);
 
+        $isPaid = $request->is_paid ? true : false;
+        $price = $isPaid ? ($request->price ?? 0) : 0;
+
         $multipart = [
             ['name' => 'title', 'contents' => $request->title],
             ['name' => 'genre', 'contents' => $request->genre],
             ['name' => 'channel_id', 'contents' => $request->channel_id],
             ['name' => 'release', 'contents' => $request->release],
-            ['name' => 'price', 'contents' => $request->price],
-            ['name' => 'is_paid', 'contents' => $request->is_paid ? '1' : '0'],
+            ['name' => 'price', 'contents' => $price],
+            ['name' => 'is_paid', 'contents' => $isPaid ? '1' : '0'],
             ['name' => 'publication', 'contents' => $request->publication ? '1' : '0'],
             ['name' => 'enable_download', 'contents' => $request->enable_download ? '1' : '0'],
         ];
 
-        // language (array)
+        // language[]
         if ($request->has('language')) {
             foreach ($request->language as $lang) {
                 $multipart[] = [
@@ -118,7 +121,7 @@ class MovieController extends Controller
             }
         }
 
-        // Countries (array)
+        // country[]
         if ($request->has('country')) {
             foreach ($request->country as $country) {
                 $multipart[] = [
@@ -128,13 +131,12 @@ class MovieController extends Controller
             }
         }
 
-
-        // Files to store locally and send as URL
+        // File fields that generate URL
         $urlFiles = ['trailer', 'thumbnail', 'poster'];
         foreach ($urlFiles as $fileField) {
             if ($request->hasFile($fileField)) {
                 $path = $request->file($fileField)->store("uploads/{$fileField}", 'public');
-                $url = asset('storage/' . $path); // generates public URL like https://yourdomain.com/storage/uploads/thumbnail/abc.jpg
+                $url = asset('storage/' . $path);
                 $multipart[] = [
                     'name' => $fileField,
                     'contents' => $url,
@@ -142,7 +144,7 @@ class MovieController extends Controller
             }
         }
 
-        // Only 'file' is uploaded as a raw file
+        // main video file
         if ($request->hasFile('file')) {
             $multipart[] = [
                 'name' => 'file',
@@ -160,7 +162,7 @@ class MovieController extends Controller
                 ],
                 'multipart' => $multipart,
             ]);
-            dd($response);
+
             if ($response->getStatusCode() == 200) {
                 return redirect()->back()->with('success', 'Movie created successfully via API!');
             } else {
@@ -170,6 +172,7 @@ class MovieController extends Controller
             return redirect()->back()->with('error', 'Exception: ' . $e->getMessage());
         }
     }
+
 
 
 

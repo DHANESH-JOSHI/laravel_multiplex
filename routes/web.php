@@ -63,6 +63,9 @@ Route::middleware(['auth'])->group(function () {
     // Common dashboard route
     Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
 
+    Route::resource('movies', MovieController::class)
+        ->only(['index', 'store', 'create', 'edit', 'update', 'destroy', 'show'])
+        ->parameters(['movies' => 'movie:slug']);
     // Admin-only routes
     Route::middleware('role:admin')->group(function () {
 
@@ -113,9 +116,9 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware('role:channel')->group(function () {
 
         // Channel-side movie access
-        Route::resource('movies', MovieController::class)
-            ->only(['index', 'store', 'create', 'edit', 'update', 'destroy', 'show'])
-            ->parameters(['movies' => 'movie:slug']);
+//        Route::resource('movies', MovieController::class)
+//            ->only(['index', 'store', 'create', 'edit', 'update', 'destroy', 'show'])
+//            ->parameters(['movies' => 'movie:slug']);
 
         // Transaction Logs for channels
         Route::resource('tlogs', TransactionLogController::class);

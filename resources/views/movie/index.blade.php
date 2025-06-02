@@ -16,14 +16,13 @@
                             <tr>
                                 <th>#</th>
 {{--                                <th>Thumbnail</th>--}}
-                                <th>Episodes</th>
-                                <th>Season</th>
+                                <th>Movies</th>
+{{--                                <th>Genre</th>--}}
                                 <th>Movies</th>
 {{--                                <th>Release Date</th>--}}
 {{--                                <th>Status</th>--}}
-                                <th>Download</th>
                                 <th>Countries</th>
-
+                                <th>Download</th>
                                 {{--                                <th>Type</th>--}}
                                 <th>Actions</th>
                             </tr>
@@ -38,11 +37,11 @@
 {{--                                    </td>--}}
 
                                     <td>{{ $movie['title'] }}</td>
-                                    <td>
-                                        @foreach ($movie['genre'] as $genre)
-                                            <span class="badge bg-secondary">{{ $genre }}</span>
-                                        @endforeach
-                                    </td>
+{{--                                    <td>--}}
+{{--                                        @foreach ($movie['genre'] as $genre)--}}
+{{--                                            <span class="badge bg-secondary">{{ $genre }}</span>--}}
+{{--                                        @endforeach--}}
+{{--                                    </td>--}}
 
                                     <td>
                                         @foreach ($movie['language'] as $language)
@@ -58,16 +57,16 @@
 {{--                                            <span class="badge bg-danger">Unpublished</span>--}}
 {{--                                        @endif--}}
 {{--                                    </td>--}}
-                                    <td>{{ $movie['enable_download'] ? 'Yes' : 'No' }}</td>
                                     <td>
                                         @foreach ($movie['country'] as $country)
                                             <span class="badge bg-primary">{{ $country }}</span>
                                         @endforeach
                                     </td>
+                                    <td>{{ $movie['enable_download'] ? 'Yes' : 'No' }}</td>
 
 
                                     <td>
-                                        <a href="{{ route('movies.show', $movie['id']) }}" class="btn btn-info btn-sm" title="View"><i class="fas fa-eye"></i></a>
+{{--                                        <a href="{{ route('movies.show', $movie['id']) }}" class="btn btn-info btn-sm" title="View"><i class="fas fa-eye"></i></a>--}}
                                         <a href="{{ route('movies.edit', $movie['id']) }}" class="btn btn-warning btn-sm" title="Edit"><i class="fas fa-edit"></i></a>
                                         <form action="{{ route('movies.destroy', $movie['id']) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are you sure?');">
                                             @csrf

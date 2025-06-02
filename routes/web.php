@@ -57,46 +57,69 @@ Route::get('/', function () {
 
 
 Route::get('/front-movies', [FrontMovieController::class, 'index'])->name('frontmovies.index');
+
 Route::middleware(['auth'])->group(function () {
-    //dashboard
+
+    // Common dashboard route
     Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
 
+    // Admin-only routes
+    Route::middleware('role:admin')->group(function () {
 
-    //movies
-    Route::resource('movies', MovieController::class)->only([
-        'index', 'store', 'create', 'edit', 'update', 'destroy', 'show'
-    ])->parameters(['movies' => 'movie:slug']);;
+        // Movies
+        Route::resource('movies', MovieController::class)
+            ->only(['index', 'store', 'create', 'edit', 'update', 'destroy', 'show'])
+            ->parameters(['movies' => 'movie:slug']);
 
-    //webSeries
-    Route::resource('webseries', WebseriesController::class);
-    Route::resource('seasons', SeasonsController::class);
-    Route::resource('episodes', WebseriesController::class);
+        // Web Series
+        Route::resource('webseries', WebseriesController::class);
+        Route::resource('seasons', SeasonsController::class);
+        Route::resource('episodes', WebseriesController::class); // check: likely wrong controller
 
-    Route::resource('countries', CountryController::class);
+        // Country Management
+        Route::resource('countries', CountryController::class);
 
-    //package Plan
-    Route::resource('plan', PlanController::class);
+        // Package Plan
+        Route::resource('plan', PlanController::class);
 
-    //package Plan
-    Route::resource('channels', ChannelController::class);
+        // Channel Management
+        Route::prefix('channels')->name('channels.')->group(function () {
+            Route::get('approve', [ChannelController::class, 'approve'])->name('approve');
+            Route::get('pending-videos', [ChannelController::class, 'pendingVideos'])->name('pendingVideos');
+            Route::get('rejected-videos', [ChannelController::class, 'rejectedVideos'])->name('rejectedVideos');
+            Route::get('blocked-videos', [ChannelController::class, 'blockedVideos'])->name('blockedVideos');
+            Route::get('videos', [ChannelController::class, 'allVideos'])->name('allVideos');
+        });
+        Route::resource('channels', ChannelController::class)->except(['create', 'store']);
 
-    //Genre
-    Route::resource('genre', GenreController::class);
+        // Genre
+        Route::resource('genre', GenreController::class);
 
-    //Banner
-    Route::resource('banner', BannerController::class);
+        // Banners
+        Route::resource('banner', BannerController::class);
+        Route::resource('home-banner', HomeBannerController::class);
 
-    //HomeScreenBanner
-    Route::resource('home-banner', HomeBannerController::class);
+        // Users
+        Route::resource('users', UserController::class);
 
-    //users
-    Route::resource('users', UserController::class);
+        // Transaction Logs
+        Route::resource('tlogs', TransactionLogController::class);
 
-    //Transaction Logs
-    Route::resource('tlogs', TransactionLogController::class);
+        // Notifications
+        Route::resource('notify', NotificationController::class);
+    });
 
-    //Notifications
-    Route::resource('notify', NotificationController::class);
+    // Channel-only routes
+    Route::middleware('role:channel')->group(function () {
+
+        // Channel-side movie access
+        Route::resource('movies', MovieController::class)
+            ->only(['index', 'store', 'create', 'edit', 'update', 'destroy', 'show'])
+            ->parameters(['movies' => 'movie:slug']);
+
+        // Transaction Logs for channels
+        Route::resource('tlogs', TransactionLogController::class);
+    });
 });
 
 

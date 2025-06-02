@@ -69,7 +69,7 @@ class HomeController extends Controller
                 $userCount = User::count();
                 return view('dashboard',compact('user', 'TotalCollectedPayments', 'TotalMonthlyPayments', 'channelCount', 'movieCount', 'genreCount', 'userCount'));
             case 'channel':
-                return view('channel.dashboard');
+                return view('channels.dashboard');
             case 'user':
             default:
                 return view('FrontendPlayer.index');

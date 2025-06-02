@@ -7,5 +7,5 @@ class Movie extends Model
 {
     protected $connection = 'mongodb';
     protected $table = 'videos';
-    protected $fillable = ['title', 'year', 'runtime', 'imdb', 'plot'];
+    protected $fillable = ['title', 'year', 'runtime', 'imdb', 'plot', 'is_paid', 'channel_id'];
 }

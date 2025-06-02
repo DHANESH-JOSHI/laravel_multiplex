@@ -160,7 +160,7 @@ class MovieController extends Controller
                 ],
                 'multipart' => $multipart,
             ]);
-
+            dd($response);
             if ($response->getStatusCode() == 200) {
                 return redirect()->back()->with('success', 'Movie created successfully via API!');
             } else {

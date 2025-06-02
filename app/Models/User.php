@@ -58,6 +58,7 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use MongoDB\Laravel\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use MongoDB\BSON\ObjectId;
 
 class User extends Authenticatable implements AuthenticatableContract
 {
@@ -70,6 +71,9 @@ class User extends Authenticatable implements AuthenticatableContract
         'name',
         'email',
         'password',
+        'channel_id',
+        'role',
+        'join_date'
     ];
 
     protected $hidden = [
@@ -84,4 +88,12 @@ class User extends Authenticatable implements AuthenticatableContract
             // 'password' => 'hashed', ❌ remove this line since you're using md5
         ];
     }
+
+//    public function channels()
+//    {
+//        return $this->belongsTo(User::class, 'user_id', '_id')
+//            ->withDefault()
+//            ->where('_id', new ObjectId($this->user_id));
+//    }
+
 }

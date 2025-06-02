@@ -80,6 +80,8 @@
 
 
 
+{{--                    @if(auth()->user())--}}
+
                     <div class="mb-4">
                         <label for="channel_id">Channel</label>
                         <select name="channel_id" class="form-control" required>
@@ -91,6 +93,7 @@
                             @endforeach
                         </select>
                     </div>
+
 
                     <div class="mb-4">
                         <label for="release">Release Date</label>
@@ -129,22 +132,31 @@
                     </div>
 
 
-                    <div class="mb-4">
-                        <label for="thumbnail_image" class="fw-bold">🖼️ Thumbnail Image (Horizontal)</label>
-                        <input type="file" name="thumbnail" id="thumbnail_image" class="form-control" accept="image/*">
-                        <small class="form-text text-muted">Recommended: 16:9 (e.g., 1280x720) — Used in previews & cards.</small>
+                    <div class="row mb-4">
+                        <div class="col-md-6 text-center">
+                            <label for="thumbnail_image" class="fw-bold">🖼️ Thumbnail (Horizontal)</label>
+                            <div class="border rounded mb-2 p-2" style="height: 200px; display: flex; justify-content: center; align-items: center;">
+                                <img id="thumbnail_preview" src="{{ asset('path/to/default-thumbnail.png') }}" style="max-height: 180px; max-width: 100%;" alt="Thumbnail Preview">
+                            </div>
+                            <input type="file" name="thumbnail" id="thumbnail_image" class="form-control" accept="image/*">
+                            <small class="text-muted d-block mt-1">Recommended: 16:9 (e.g., 1280x720)</small>
+                        </div>
+
+                        <div class="col-md-6 text-center">
+                            <label for="poster_image" class="fw-bold">🎞️ Poster (Vertical)</label>
+                            <div class="border rounded mb-2 p-2" style="height: 200px; display: flex; justify-content: center; align-items: center;">
+                                <img id="poster_preview" src="{{ asset('path/to/default-poster.png') }}" style="max-height: 180px; max-width: 100%;" alt="Poster Preview">
+                            </div>
+                            <input type="file" name="poster" id="poster_image" class="form-control" accept="image/*">
+                            <small class="text-muted d-block mt-1">Recommended: 2:3 (e.g., 1080x1620)</small>
+                        </div>
                     </div>
 
-                    <div class="mb-4">
-                        <label for="poster_image" class="fw-bold">🎞️ Poster Image (Vertical)</label>
-                        <input type="file" name="poster" id="poster_image" class="form-control" accept="image/*">
-                        <small class="form-text text-muted">Recommended: 2:3 (e.g., 1080x1620) — Used in movie details page.</small>
-                    </div>
 
 
                     <div class="mb-4">
                         <label for="file">Video File <span class="text-danger">*</span></label>
-                        <input type="file" name="file" class="form-control" required accept="video/*">
+                        <input type="file" name="file" class="form-control" accept="video/*">
                     </div>
 
                     <div class="mb-4">

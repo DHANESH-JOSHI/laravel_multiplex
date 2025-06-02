@@ -106,6 +106,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $user = User::where('email', $request->email)->first();
+        $channel_user = Channel::where('user_id', $user->id)->first();
 
         if (!$user || !md5($request->password, $user->password)) {
             return redirect()->back()->withErrors(['email' => 'Invalid email or password.']);
@@ -117,7 +118,7 @@ class AuthController extends Controller
         }
 
         if ($user->role === 'channel') {
-            switch ($user->status) {
+            switch ($channel_user->status) {
                 case 'approve':
                     Auth::login($user);
                     return redirect()->intended('/dashboard');
@@ -188,9 +189,7 @@ class AuthController extends Controller
         ]);
 
         $isChannel = $request->filled('channel_name');
-        $role = $isChannel ? 'channel' : 'user';
-
-        // Handle file upload
+        $role = $isChannel ? 'channel' : 'user';// Handle file upload
         $documentPath = null;
         if ($request->hasFile('document')) {
             $documentPath = $request->file('document')->store('channel_documents', 'public');
@@ -209,7 +208,7 @@ class AuthController extends Controller
 
         // If channel registration, create Channel record with document path
         if ($isChannel) {
-            Channel::create([
+            $channel = Channel::create([
                 'channel_name' => $request->channel_name,
                 'user_id' => (string) $user->_id, // Assuming MongoDB _id, cast to string
                 'mobile_number' => $request->mobile,
@@ -222,12 +221,16 @@ class AuthController extends Controller
                 'join_date' => now(),
                 'last_login' => now(),
             ]);
+            // Update User with channel_id
+            $user->channel_id = (string) $channel->_id;
+            $user->save();
         }
 
-        // Login the user after registration
-        Auth::login($user);
-
-        return redirect('/dashboard');
+        if($channel->status === 'pending'){
+            return redirect()->intended('/login');
+        }else{
+            return redirect('/dashboard');
+        }
     }
 
 

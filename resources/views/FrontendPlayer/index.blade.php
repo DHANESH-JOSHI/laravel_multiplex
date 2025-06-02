@@ -16,7 +16,6 @@
             <a id="download-link" class="inline-block bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition" target="_blank">⬇️ Download</a>
         </div>
     </div>
-    @dd(auth()->id());
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <script>
         const userId = "{{ auth()->id() ?? '681ce0293ca77c5b4bc49462' }}";

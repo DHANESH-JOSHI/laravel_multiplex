@@ -27,25 +27,26 @@ class UserController extends Controller
             })->toArray();
 
             // 3. Get all subscriptions for these users
-            $subscriptions = Subscriptions::whereIn('user_id', $userIds)->get()->groupBy(function ($item) {
-                return (string) $item->user_id; // Group by string version of ObjectId
-            });
-
-            // 4. Attach subscriptions to each user
-            $users->transform(function ($user) use ($subscriptions) {
-                $user->subscriptions = $subscriptions;
-                return $user;
-            });
+//            $subscriptions = Subscriptions::whereIn('user_id', $userIds)->get()->groupBy(function ($item) {
+//                return (string) $item->user_id; // Group by string version of ObjectId
+//            });
+//
+//            // 4. Attach subscriptions to each user
+//            $users->transform(function ($user) use ($subscriptions) {
+//                $user->subscriptions = $subscriptions;
+//                return $user;
+//            });
 //            dd($users->first(), $subscriptions->first());
+//            dd($users);
             // 5. Return response for DataTable
             return DataTables::of($users)
                 ->addIndexColumn()
-                ->addColumn('subscription_count', function ($user) {
-                    return $user->subscriptions->count();
-                })
-                ->addColumn('subscription_names', function ($user) {
-                    return $user->subscriptions->pluck('plan_name')->implode(', ');
-                })
+//                ->addColumn('subscription_count', function ($user) {
+//                    return $user->subscriptions->count();
+//                })
+//                ->addColumn('subscription_names', function ($user) {
+//                    return $user->subscriptions->pluck('plan_name')->implode(', ');
+//                })
                 ->rawColumns(['subscription_names'])
                 ->make(true);
         }
